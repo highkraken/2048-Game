@@ -1,0 +1,484 @@
+#include<iostream>
+#include<cstdlib>
+#include<ctime>
+#include<stdlib.h>
+using namespace std;
+int score=0;
+int display(int x[4][4])
+{
+	cout<<"\t\t\tScore: "<<::score<<endl;
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			if(j==1||j==2||j==3)
+			cout<<"\t|";
+			cout<<"\t"<<x[i][j];
+		}
+		cout<<endl<<"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"<<endl;
+	}
+}
+int randomize(int b[4][4])
+{
+	int i,j,k;
+	while(true)
+	{
+		srand(time(0));
+		i=rand()%4;
+		j=rand()%4;
+		//cout<<b[i][j]<<endl;
+		if(b[i][j]==0)
+		{
+			//b[i][j]=2;
+			srand(time(NULL));
+			b[i][j]=2*(1+rand()%2);
+			break;
+		}
+		else
+		{
+			continue;
+		}
+	}
+	return b[4][4];
+}
+int initialize(int b[4][4])
+{
+	int i,j;
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+			b[i][j]=0;
+	}
+	b[4][4]=randomize(b);
+	b[4][4]=randomize(b);
+	return b[4][4];
+}
+int up(int b[4][4])
+{
+	int i,j;
+	//cout<<"UP SWIPE\n";
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(i!=3&&b[i][j]==0&&b[i+1][j]!=0)
+			{
+				b[i][j]=b[i+1][j];
+				b[i+1][j]=0;
+				i=0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(b[i][j]==b[i+1][j]&&i!=3)
+			{
+				b[i][j]+=b[i+1][j];
+				::score+=b[i][j];
+				b[i+1][j]=0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(i!=3&&b[i][j]==0&&b[i+1][j]!=0)
+			{
+				b[i][j]=b[i+1][j];
+				b[i+1][j]=0;
+				i=0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(b[i][j]==0)
+			{
+				b[4][4]=randomize(b);
+				goto xd;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	//display(b);
+	xd:
+		{
+			cout<<endl;
+		}
+	return b[4][4];
+}
+int left(int b[4][4])
+{
+	int i,j;
+	//cout<<"LEFT SWIPE\n";
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(j!=3&&b[i][j]==0&&b[i][j+1]!=0)
+			{
+				b[i][j]=b[i][j+1];
+				b[i][j+1]=0;
+				j=0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(b[i][j]==b[i][j+1]&&j!=3)
+			{
+				b[i][j]+=b[i][j+1];
+				::score+=b[i][j];
+				b[i][j+1]=0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(j!=3&&b[i][j]==0&&b[i][j+1]!=0)
+			{
+				b[i][j]=b[i][j+1];
+				b[i][j+1]=0;
+				j=0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(b[i][j]==0)
+			{
+				b[4][4]=randomize(b);
+				goto xd;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	//display(b);
+	xd:
+		{
+			cout<<endl;
+		}
+	return b[4][4];
+}
+int down(int b[4][4])
+{
+	int i,j,k;
+	//cout<<"DOWN SWIPE\n";
+	for(i=3;i>=0;i--)
+	{
+		for(j=3;j>=0;j--)
+		{
+			if(b[i][j]==0)
+			{
+				for(k=i;k>=0;k--)
+				{
+					if(b[k][j]!=0)
+					{
+						b[i][j]=b[k][j];
+						b[k][j]=0;
+						break;
+					}
+					else
+						continue;
+				}
+			}
+			else
+				continue;
+		}
+	}
+	for(i=3;i>=0;i--)
+	{
+		for(j=3;j>=0;j--)
+		{
+			if(i!=0&&b[i][j]==b[i-1][j])
+			{
+				b[i][j]+=b[i-1][j];
+				::score+=b[i][j];
+				b[i-1][j]=0;
+			}
+			else
+				continue;
+		}
+	}
+	for(i=3;i>=0;i--)
+	{
+		for(j=3;j>=0;j--)
+		{
+			if(b[i][j]==0)
+			{
+				for(k=i;k>=0;k--)
+				{
+					if(b[k][j]!=0)
+					{
+						b[i][j]=b[k][j];
+						b[k][j]=0;
+						break;
+					}
+					else
+						continue;
+				}
+			}
+			else
+				continue;
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(b[i][j]==0)
+			{
+				b[4][4]=randomize(b);
+				goto xd;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	//display(b);
+	xd:
+		{
+			cout<<endl;
+		}
+	return b[4][4];
+}
+int right(int b[4][4])
+{
+	int i,j,k;
+	//cout<<"RIGHT SWIPE\n";
+	for(i=3;i>=0;i--)
+	{
+		for(j=3;j>=0;j--)
+		{
+			if(b[i][j]==0)
+			{
+				for(k=j;k>=0;k--)
+				{
+					if(b[i][k]!=0)
+					{
+						b[i][j]=b[i][k];
+						b[i][k]=0;
+						break;
+					}
+					else
+						continue;
+				}
+			}
+			else
+				continue;
+		}
+	}
+	for(i=3;i>=0;i--)
+	{
+		for(j=3;j>=0;j--)
+		{
+			if(j!=0&&b[i][j]==b[i][j-1])
+			{
+				b[i][j]+=b[i][j-1];
+				::score+=b[i][j];
+				b[i][j-1]=0;
+			}
+			else
+				continue;
+		}
+	}
+	for(i=3;i>=0;i--)
+	{
+		for(j=3;j>=0;j--)
+		{
+			if(b[i][j]==0)
+			{
+				for(k=j;k>=0;k--)
+				{
+					if(b[i][k]!=0)
+					{
+						b[i][j]=b[i][k];
+						b[i][k]=0;
+						break;
+					}
+					else
+						continue;
+				}
+			}
+			else
+				continue;
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		for(j=0;j<4;j++)
+		{
+			if(b[i][j]==0)
+			{
+				b[4][4]=randomize(b);
+				//break;
+				goto xd;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	//display(b);
+	xd:
+		{
+			cout<<endl;
+		}
+	return b[4][4];
+}
+int steps(int b[4][4])
+{
+	system("CLS");
+	display(b);
+	char ch;
+	cout<<"W - Move Up\nA - Move Left\nS - Move Down\nD - Move Right\n0 - Exit\nEnter Your Move: ";
+	cin>>ch;
+	if(ch=='w'||ch=='W')
+	{
+		b[4][4]=up(b);
+		display(b);
+	}
+	if(ch=='a'||ch=='A')
+	{
+		b[4][4]=left(b);
+		display(b);
+	}
+	if(ch=='s'||ch=='S')
+	{
+		b[4][4]=down(b);
+		display(b);
+	}
+	if(ch=='d'||ch=='D')
+	{
+		b[4][4]=right(b);
+		display(b);
+	}
+	if(ch=='0')
+	{
+		exit(0);
+	}
+	return b[4][4];
+}
+int endgame(int b[4][4])
+{
+	exit(0);
+}
+int main()
+{
+	int a[4][4],b[4][4],i,j,temp,cnt;
+	a[4][4]=initialize(a);
+	display(a);
+	while(true)
+	{
+		temp=0;
+		cnt=0;
+		for(i=0;i<4;i++)
+		{
+			for(j=0;j<4;j++)
+			{
+				if(a[i][j]==0)
+				{
+					temp++;
+					break;
+				}
+			}
+		}
+		for(i=0;i<4;i++)
+		{
+			for(j=0;j<4;j++)
+			{
+				b[i][j]=a[i][j];
+			}
+		}
+		if(temp!=0)
+		{
+			a[4][4]=steps(a);
+			continue;
+		}
+		else
+		{
+			b[4][4]=up(b);
+			b[4][4]=down(b);
+			b[4][4]=left(b);
+			b[4][4]=right(b);
+			for(i=0;i<4;i++)
+			{
+				for(j=0;j<4;j++)
+				{
+					if(a[i][j]!=b[i][j])
+					{
+						a[4][4]=steps(a);
+						goto xd;
+					}
+					else
+					{
+						cnt++;
+						continue;
+					}
+				}
+			}
+			xd:
+				{
+					//hello
+				}
+			if(cnt==16)
+				endgame(a);
+			/*if(a[4][4]==b[4][4])
+			{
+				endgame(a);
+				continue;
+			}
+			else
+			{
+				a[4][4]=steps(a);
+				continue;
+			}*/
+		}
+	}
+	//a[4][4]=steps(a);
+	return 0;
+}
