@@ -1,2 +1,2 @@
 # 2048 - Game
-I built a clone for the game named 2048. This is C++ version of the game. You can play and report me the bugs if you find any. Currently I haven't added any GUI to the game. I'll implement another version of it in Python which will include GUI. This is the basic logic version for the game.
+I have coded the game logic for 2048 game in C++ language. You can test the code and report the bugs to me. I haven't added any GUI to the game. This is just the basic logic for it.
